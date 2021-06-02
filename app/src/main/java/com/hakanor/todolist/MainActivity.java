@@ -1,19 +1,13 @@
 package com.hakanor.todolist;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,17 +17,20 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     ArrayList<String> describes = new ArrayList<String>();
 
     private Button testbutton;
-    private ListView listView;
-    public ArrayAdapter<String> itemsAdapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         testbutton=findViewById(R.id.testbutton);
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, titles);
-        listView=findViewById(R.id.listView);
-        listView.setAdapter(itemsAdapter);
+        recyclerView =findViewById(R.id.recylerview);
+
+        TaskAdapter taskAdapter = new TaskAdapter(this, Task.getData());
+        recyclerView.setAdapter(taskAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         testbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             titles.add(title);
             describes.add(desc);
         }
-        itemsAdapter.notifyDataSetChanged();
     }
 
 
