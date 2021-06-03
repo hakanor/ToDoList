@@ -4,12 +4,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:id="@+id/edit_title"
         android:hint="Baslik giriniz"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="12dp"
         android:id="@+id/edit_desc"
         android:hint="Aciklama Giriniz"
         android:layout_below="@+id/edit_title"
