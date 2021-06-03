@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         buildRecyclerView();
         createExampleList();
 
+
+
                 //FLOAT ACTION BUTTON //
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             }
         });
 
+    }
+    public void removeItem(int position) {
+        mExampleList.remove(position);
+        mAdapter.notifyItemRemoved(position);
     }
 
                         //DIALOG //
@@ -56,11 +62,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         mExampleList.add(new ExampleItem(R.drawable.check, "Line 3", "Line 4"));
         mExampleList.add(new ExampleItem(R.drawable.check, "Line 5", "Line 6"));
         mAdapter.setItems(mExampleList);
-    }
-
-    public void changeItem(int position, String text) {
-        mExampleList.get(position).changeText1(text);
-        mAdapter.notifyItemChanged(position);
     }
 
 
@@ -85,6 +86,11 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
                 startActivity(intent);
 
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                removeItem(position);
             }
         });
     }
