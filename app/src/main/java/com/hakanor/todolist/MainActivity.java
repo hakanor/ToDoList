@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     }
 
     // --------------------------------------------------------------------//
-
                          //Genel //
 
     public void createExampleList() {
