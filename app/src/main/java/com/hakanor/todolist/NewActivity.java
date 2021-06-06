@@ -1,6 +1,7 @@
 package com.hakanor.todolist;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,11 +27,12 @@ public class NewActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<ExampleItem> mExampleList = (ArrayList<ExampleItem>) intent.getSerializableExtra("mExampleList");
-        int position = intent.getIntExtra("position",0);
+        final int position = intent.getIntExtra("position",0);
         Toast.makeText(this, mExampleList.get(position).getText1(), Toast.LENGTH_SHORT).show();
-
         editText1 = findViewById(R.id.editText1);
         editText2 = findViewById(R.id.editText2);
+        editText1.setBackgroundResource(android.R.drawable.editbox_background);
+        editText2.setBackgroundResource(android.R.drawable.editbox_background);
         editText1.setText(mExampleList.get(position).getText1());
         editText2.setText(mExampleList.get(position).getText2());
         edit_button=findViewById(R.id.edit_button);
@@ -41,14 +43,21 @@ public class NewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editText1.setEnabled(true);
                 editText2.setEnabled(true);
-                check_button.setVisibility(1);
+                check_button.setVisibility(View.VISIBLE);
             }
         });
 
         check_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // bu buton kaydetme ile ilgili işlerde lazım.
+
+                Intent intent = new Intent();
+                intent.putExtra("editText1", editText1.getText().toString());
+                intent.putExtra("editText2", editText2.getText().toString());
+                intent.putExtra("position", position);
+                setResult(RESULT_OK, intent);
+                finish();
+
             }
         });
 

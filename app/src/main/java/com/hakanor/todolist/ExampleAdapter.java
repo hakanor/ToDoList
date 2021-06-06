@@ -27,11 +27,13 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         public ImageView mImageView;
         public TextView mTextView1;
         public TextView mTextView2;
-        public ExampleViewHolder(View itemView, final OnItemClickListener listener) {
+        public ExampleViewHolder(final View itemView, final OnItemClickListener listener) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.ImageViev);
             mTextView1 = itemView.findViewById(R.id.tw1);
             mTextView2 = itemView.findViewById(R.id.tw2);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         mAdapter.notifyItemRemoved(position);
     }
 
+    public void insertItem(int position,String text1,String text2) {
+        mExampleList.add(position, new ExampleItem(R.drawable.check, text1, text2));
+        mAdapter.notifyItemInserted(position);
+    }
+
                         //DIALOG //
     public void openDialog(){
         ExampleDialog exampleDialog = new ExampleDialog();
@@ -77,13 +82,10 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                 mExampleList.get(position).getText2();
                 mExampleList.get(position);
 
-
                 Intent intent = new Intent(MainActivity.this, NewActivity.class);
                 intent.putExtra("mExampleList",mExampleList);
                 intent.putExtra("position",position);
-
-                startActivity(intent);
-
+                startActivityForResult(intent, 1);
             }
 
             @Override
@@ -91,6 +93,29 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                 removeItem(position);
             }
         });
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String et1 = data.getStringExtra("editText1");
+                String et2 = data.getStringExtra("editText2");
+                int position=data.getIntExtra("position",0);
+
+                        if(mExampleList.get(position).getText1().equals(et1) && mExampleList.get(position).getText2().equals(et2)){
+                            //Bir değişiklik yapılmamış demektir.
+                        }
+                        else{
+                            mExampleList.remove(position);
+                            mAdapter.notifyItemRemoved(position);
+                            insertItem(position,et1,et2);
+                        }
+
+
+            }
+        }
     }
 
     @Override
