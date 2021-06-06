@@ -1,10 +1,10 @@
 package com.hakanor.todolist;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -42,6 +42,21 @@ public class NewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editText1.setEnabled(true);
+
+                editText1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        editText1.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                InputMethodManager inputMethodManager= (InputMethodManager) NewActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputMethodManager.showSoftInput(editText1, InputMethodManager.SHOW_IMPLICIT);
+                            }
+                        });
+                    }
+                });
+                editText1.requestFocus();
+
                 editText2.setEnabled(true);
                 check_button.setVisibility(View.VISIBLE);
             }
