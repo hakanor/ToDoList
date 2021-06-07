@@ -1,17 +1,20 @@
 package com.hakanor.todolist;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
 
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     private RecyclerView mRecyclerView;
     private ExampleAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private static final int REQUEST_CODE_SPEECH_INPUT=1000;
+    ArrayList<String> result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,15 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         buildRecyclerView();
         createExampleList();
 
+        //Voice FLOAT ACTION BUTTON //
+        FloatingActionButton vab = findViewById(R.id.vab);
+        vab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                speak();
+            }
+
+        });
 
                 //FLOAT ACTION BUTTON //
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -40,6 +54,24 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         });
 
     }
+
+
+    // NON ON CREATE // FUNCTION
+
+    public void speak() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak for a new task");
+        try {
+            startActivityForResult(intent,MainActivity.REQUEST_CODE_SPEECH_INPUT);
+        }
+        catch (Exception e){
+
+        }
+
+    }
+
     public void removeItem(int position) {
         ExampleItem temp=mExampleList.get(position);
         mExampleList.remove(position);
@@ -129,6 +161,18 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                         }
 
 
+            }
+        }
+
+        if(requestCode==REQUEST_CODE_SPEECH_INPUT){
+            switch(requestCode){
+                case REQUEST_CODE_SPEECH_INPUT:{
+                    if(resultCode==RESULT_OK && null!=data)
+                        result=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                        mExampleList.add(new ExampleItem(R.drawable.check, "Voice Task", result.get(0)));
+                        mAdapter.notifyDataSetChanged();
+                }
+                break;
             }
         }
     }

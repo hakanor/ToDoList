@@ -70,7 +70,6 @@ public class ExampleDialog extends AppCompatDialogFragment {
         //
 
         return builder.create();
-
     }
 
     @Override
