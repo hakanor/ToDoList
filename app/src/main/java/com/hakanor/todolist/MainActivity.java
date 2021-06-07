@@ -169,8 +169,15 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                 case REQUEST_CODE_SPEECH_INPUT:{
                     if(resultCode==RESULT_OK && null!=data)
                         result=data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    try {
                         mExampleList.add(new ExampleItem(R.drawable.check, "Voice Task", result.get(0)));
                         mAdapter.notifyDataSetChanged();
+                        result.removeAll(result);
+                    }
+                    catch(Exception e){
+                        Toast.makeText(this, "Creating task canceled.", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 break;
             }
