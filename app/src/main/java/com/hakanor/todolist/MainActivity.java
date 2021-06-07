@@ -123,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                             //Bir değişiklik yapılmamış demektir.
                         }
                         else{
-                            mExampleList.remove(position);
-                            mAdapter.notifyItemRemoved(position);
-                            insertItem(position,et1,et2);
+                            mExampleList.get(position).setText1(et1);
+                            mExampleList.get(position).setText2(et2);
+                            mAdapter.notifyDataSetChanged();
                         }
 
 

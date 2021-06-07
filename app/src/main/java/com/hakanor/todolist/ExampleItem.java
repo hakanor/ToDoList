@@ -23,4 +23,12 @@ public class ExampleItem implements Serializable {
     public String getText2() {
         return mText2;
     }
+    public String setText1(String text) {
+        this.mText1=text;
+        return mText1;
+    }
+    public String setText2(String text) {
+        this.mText2=text;
+        return mText2;
+    }
 }

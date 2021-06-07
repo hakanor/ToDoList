@@ -16,10 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-
 public class ExampleDialog extends AppCompatDialogFragment {
     @NonNull
-
 
     private EditText edittext1;
     private EditText edittext2;

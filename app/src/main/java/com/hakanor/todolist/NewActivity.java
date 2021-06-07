@@ -28,7 +28,6 @@ public class NewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ArrayList<ExampleItem> mExampleList = (ArrayList<ExampleItem>) intent.getSerializableExtra("mExampleList");
         final int position = intent.getIntExtra("position",0);
-        Toast.makeText(this, mExampleList.get(position).getText1(), Toast.LENGTH_SHORT).show();
         editText1 = findViewById(R.id.editText1);
         editText2 = findViewById(R.id.editText2);
         editText1.setBackgroundResource(android.R.drawable.editbox_background);
