@@ -1,18 +1,21 @@
 package com.hakanor.todolist;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         setContentView(R.layout.activity_main);
         coordinatorLayout = findViewById(R.id.coordinator_layout);
         buildRecyclerView();
-        createExampleList();
+        loadData();
 
         //Voice FLOAT ACTION BUTTON //
         FloatingActionButton vab = findViewById(R.id.vab);
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
         });
 
-                //FLOAT ACTION BUTTON //
+        //FLOAT ACTION BUTTON //
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,14 +58,40 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+        saveData();
+    }
 
-    // NON ON CREATE // FUNCTION
+    // NON ON CREATE //
+    // NON ON CREATE //
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mExampleList);
+        editor.putString("task list", json);
+        editor.apply();
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("task list", null);
+        Type type = new TypeToken<ArrayList<ExampleItem>>() {}.getType();
+        mExampleList = gson.fromJson(json, type);
+        if (mExampleList == null) {
+            mExampleList = new ArrayList<>();
+        }
+        mAdapter.setItems(mExampleList);
+    }
 
     public void speak() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak for a new task");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak for a new task!");
         try {
             startActivityForResult(intent,MainActivity.REQUEST_CODE_SPEECH_INPUT);
         }
@@ -105,15 +134,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     // --------------------------------------------------------------------//
                          //Genel //
-
-    public void createExampleList() {
-        mExampleList = new ArrayList<>();
-        mExampleList.add(new ExampleItem(R.drawable.check, "Line 1", "Line 2"));
-        mExampleList.add(new ExampleItem(R.drawable.check, "Line 3", "Line 4"));
-        mExampleList.add(new ExampleItem(R.drawable.check, "Line 5", "Line 6"));
-        mAdapter.setItems(mExampleList);
-    }
-
 
     public void buildRecyclerView() {
         mRecyclerView = findViewById(R.id.recyclerView);
